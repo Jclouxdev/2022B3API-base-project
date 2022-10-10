@@ -32,6 +32,11 @@ $ npm run test
 
 ```bash
 docker-compose up --force-recreate -V
+docker start postgres
+docker exec -it postgres psql -U postgres
+  CREATE DATABASE devapi;
+  \c devapi
+  create extension if not exists "uuid-ossp";
 ```
 
 ### Testing e2e
