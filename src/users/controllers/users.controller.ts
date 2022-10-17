@@ -1,10 +1,13 @@
-import { Body, Controller, Get, Post, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Request, UseGuards, ValidationPipe } from '@nestjs/common';
+import { ExtractJwt } from 'passport-jwt';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UsersService } from '../services/users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersServices: UsersService) {}
+  constructor(private readonly usersServices: UsersService) {
+  }
   
   @Get()
   findAll() {
@@ -18,4 +21,20 @@ export class UsersController {
   ) {
     return this.usersServices.insert(user);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/me')
+  getProfile(@Request() req) {
+    return req.user;
+    // récuper JWT token
+    // Dechiffrer
+    // récuperer l'id
+    // renvoyer l'user de l'id
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id: string){
+    return this.usersServices.getUserById(id);
+  }
+
 }

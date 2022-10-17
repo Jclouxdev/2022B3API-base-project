@@ -23,5 +23,5 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  role?: 'Employee' | 'Admin' | 'ProjectManager';
+  role?: 'Employee' | 'Admin' | 'ProjectManager' = 'Employee';
 }

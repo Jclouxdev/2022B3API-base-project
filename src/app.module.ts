@@ -6,6 +6,7 @@ import { UsersController } from './users/controllers/users.controller';
 import UserEntity from './users/entitiy/user.entity';
 import { UsersService } from './users/services/users.service';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
       inject: [ConfigService],
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],

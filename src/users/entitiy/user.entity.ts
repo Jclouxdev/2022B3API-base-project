@@ -12,17 +12,17 @@ import {
 
 @Entity()
 export default class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column('varchar', { length: 50 })
+  @Column('varchar', { unique: true, length: 50 })
   username: string;
   
   @Column({ unique: true, length: 100 })
   email: string;
   
   @Column('varchar', { nullable: true })
-  role?: 'Employee' | 'Admin' | 'ProjectManager';
+  role?: 'Employee' | 'Admin' | 'ProjectManager' = 'Employee';
 
   @Column({ select: false })
   password: string;
