@@ -8,7 +8,9 @@ import {
   BaseEntity,
   BeforeInsert,
   BeforeUpdate,
+  OneToMany,
 } from 'typeorm';
+import ProjectEntity from '../projects/project.entity';
 
 @Entity()
 export default class UserEntity extends BaseEntity {
@@ -26,6 +28,9 @@ export default class UserEntity extends BaseEntity {
 
   @Column({ select: false })
   password: string;
+
+  @OneToMany(() => ProjectEntity, (project) => project.referringEmployeeId)
+  projects: ProjectEntity[]
 
   @BeforeInsert()
   @BeforeUpdate()

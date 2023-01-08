@@ -1,7 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import { isUUID, IsUUID } from 'class-validator';
 import { ExtractJwt } from 'passport-jwt';
 import { CreateUserDto } from '../dto/create-user.dto';
-import UserEntity from '../entitiy/user.entity';
+import UserEntity from '../user.entity';
 
 @Injectable()
 export class UsersService {
@@ -41,6 +42,9 @@ export class UsersService {
   }
 
   async getUserById(id: string): Promise<UserEntity> {
+    if (!isUUID(id)) {
+      throw new BadRequestException('bad request')
+    }
     const getUserById = await UserEntity.findOne({
       where: {
         id: id,
@@ -48,16 +52,8 @@ export class UsersService {
     });
     if (getUserById === null) {
       throw new NotFoundException('user does not exist');
-    } else {
-      return getUserById;
-    }
+    } 
+    return getUserById;
   }
 
-  async getMeByToken() {
-    const token = ExtractJwt.fromAuthHeaderAsBearerToken();
-    if(!token) {
-      throw new ForbiddenException("no token found");
-    }
-    return token;
-  }
 }

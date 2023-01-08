@@ -3,10 +3,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import { UsersController } from './users/controllers/users.controller';
-import UserEntity from './users/entitiy/user.entity';
 import { UsersService } from './users/services/users.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ProjectsController } from './projects/controllers/projects.controller';
+import UserEntity from './users/user.entity';
+import { ProjectsService } from './projects/services/projects.service';
+import ProjectEntity from './projects/project.entity';
+import { ProjectsModule } from './projects/projects.module';
 
 
 @Module({
@@ -21,15 +25,16 @@ import { AuthModule } from './auth/auth.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [UserEntity],
+        entities: [UserEntity, ProjectEntity],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     UsersModule,
     AuthModule,
+    ProjectsModule
   ],
-  controllers: [UsersController],
-  providers: [UsersService],
+  controllers: [UsersController, ProjectsController],
+  providers: [UsersService, ProjectsService],
 })
 export class AppModule {}

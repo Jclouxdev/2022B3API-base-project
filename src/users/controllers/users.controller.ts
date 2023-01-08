@@ -9,7 +9,8 @@ export class UsersController {
   constructor(private readonly usersServices: UsersService) {
   }
   
-  @Get()
+  @UseGuards(JwtAuthGuard)
+  @Get('/')
   findAll() {
     return this.usersServices.getAllUsers();
   }
@@ -26,15 +27,11 @@ export class UsersController {
   @Get('/me')
   getProfile(@Request() req) {
     return req.user;
-    // récuper JWT token
-    // Dechiffrer
-    // récuperer l'id
-    // renvoyer l'user de l'id
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   getUserById(@Param('id') id: string){
     return this.usersServices.getUserById(id);
   }
-
 }
